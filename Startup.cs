@@ -1,9 +1,12 @@
 
 using dotnet_rpg.Data;
 using dotnet_rpg.Services.CharacterServices;
+using dotnet_rpg.Services.CharacterSkillService;
+using dotnet_rpg.Services.WeaponServices;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +46,7 @@ namespace dotnet_rpg
             });
             services.AddScoped<ICharacterSeervice, CharacterService>();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IWeaponService, WeaponService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -55,6 +59,9 @@ namespace dotnet_rpg
                         ValidateAudience = false
                     };
                 });
+            services.AddScoped<ICharacterSkillService, CharacterSkillService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

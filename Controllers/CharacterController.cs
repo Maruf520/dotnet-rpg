@@ -29,11 +29,10 @@ namespace dotnet_rpg.Controllers
         public async Task<IActionResult> Get()
 
         {
-            int userId = int.Parse(User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier).Value);
-            return Ok(await _CharacterServices.GetALlCharacter(userId));
+            return Ok(await _CharacterServices.GetALlCharacter());
         }
 
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetSingle(int id)
         {
             return Ok( await _CharacterServices.GetCharacterById(id));
@@ -43,7 +42,6 @@ namespace dotnet_rpg.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCharcter(AddCharacterDto character)
         {
-            await _CharacterServices.AddCharacter(character);
             return Ok(await _CharacterServices.AddCharacter(character));
         }
 
@@ -58,15 +56,16 @@ namespace dotnet_rpg.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("id ")]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> Delete (int id)
         {
-            ServiceResponse < List < GetCharacterDto >> response = await _CharacterServices.DeleteCharacter(id);
+            ServiceResponse<List<GetCharacterDto>> response = await _CharacterServices.DeleteCharacter(id);
             if (response.Data == null)
             {
                 return NotFound();
             }
             return Ok(response);
+
         }
 
     }
